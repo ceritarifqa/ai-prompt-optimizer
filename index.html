@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Optimizer | Smart Enhancement</title>
+    <style>
+        :root {
+            /* Notion Light Theme */
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F7F6F3;
+            --bg-tertiary: #EFEEEB;
+
+            /* Soft Blue Accent */
+            --accent-primary: #2383E2;
+            --accent-secondary: #529CCA;
+            --accent-hover: #1966B8;
+
+            /* Text Colors */
+            --text-primary: #37352F;
+            --text-secondary: #787774;
+            --text-tertiary: #9B9A97;
+
+            /* Borders & Dividers */
+            --border-color: #E3E2E0;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 4px 8px 0 rgba(0, 0, 0, 0.12);
+
+            /* Spacing (Balanced Notion-style) */
+            --spacing-xs: 8px;
+            --spacing-sm: 12px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+
+            /* Border Radius (Soft Rounded) */
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+
+        /* Language Toggle */
+        .language-toggle {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 4px;
+        }
+
+        .language-toggle button {
+            padding: 6px 14px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .language-toggle button:hover {
+            color: var(--text-primary);
+        }
+
+        .language-toggle button.active {
+            background: var(--bg-primary);
+            color: var(--accent-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-md);
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Main Input Area */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .main-input {
+            width: 100%;
+            min-height: 180px;
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: inherit;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.2s ease;
+        }
+
+        .main-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .main-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* Optimize Button - Small, Soft Blue */
+        .button-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .optimize-btn {
+            padding: 10px 24px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .optimize-btn:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .optimize-btn:active {
+            transform: translateY(0);
+        }
+
+        .optimize-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Detection Badge - Inline, appears after typing */
+        .detection-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .detection-badge .icon {
+            font-size: 14px;
+        }
+
+        .detection-info {
+            margin-bottom: var(--spacing-md);
+            display: none;
+        }
+
+        /* Platform Selector Popup */
+        .platform-selector-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .platform-selector-popup.show {
+            display: flex;
+        }
+
+        .popup-content {
+            background: var(--bg-primary);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .popup-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .platform-option {
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            background: var(--bg-secondary);
+        }
+
+        .platform-option:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .platform-option.selected {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        /* Output Section - Slides in after optimize */
+        .output-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .output-header {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .output-box {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-primary);
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: var(--spacing-md);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Action Buttons */
+        .btn-group {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .btn {
+            flex: 1;
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--bg-primary);
+            border-color: var(--accent-secondary);
+            color: var(--text-primary);
+        }
+
+        /* Examples Section - Collapsible */
+        .examples-section {
+            margin-top: var(--spacing-xl);
+        }
+
+        .examples-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: var(--spacing-sm) 0;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            font-family: inherit;
+        }
+
+        .examples-toggle:hover {
+            color: var(--accent-secondary);
+        }
+
+        .examples-content {
+            margin-top: var(--spacing-md);
+            display: none;
+        }
+
+        .examples-content.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .example-item {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .example-item:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-secondary);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: var(--accent-primary);
+            color: white;
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--spacing-md);
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .main-input {
+                min-height: 150px;
+            }
+
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>AI Prompt Optimizer</h1>
+            <div class="language-toggle">
+                <button class="active" onclick="setLanguage('en')" id="langEN">English</button>
+                <button onclick="setLanguage('id')" id="langID">Indonesia</button>
+            </div>
+        </header>
+
+        <!-- Main Input Area -->
+        <div class="input-wrapper">
+            <textarea
+                id="userInput"
+                class="main-input"
+                placeholder="Type your idea here...
+
+Examples:
+• 'sunset at the beach with palm trees'
+• 'instagram content about homemade chocolate cake'
+• 'python code for web scraping'
+
+Just type anything, AI will detect and optimize!"
+            ></textarea>
+        </div>
+
+        <!-- Detection Badge (appears after typing) -->
+        <div id="detectionInfo" class="detection-info">
+            <div id="detectionBadges"></div>
+        </div>
+
+        <!-- Optimize Button -->
+        <div class="button-wrapper">
+            <button class="optimize-btn" onclick="analyzeAndOptimize()" id="optimizeBtn">
+                Optimize
+            </button>
+        </div>
+
+        <!-- Output Section (slides in after optimize) -->
+        <div class="output-section" id="outputSection">
+            <div class="output-header">Your Optimized Prompt</div>
+            <div class="output-box" id="optimizedOutput"></div>
+
+            <div class="btn-group">
+                <button class="btn" onclick="copyToClipboard()">
+                    📋 Copy
+                </button>
+                <button class="btn" onclick="downloadPrompt()">
+                    ⬇️ Download
+                </button>
+                <button class="btn" onclick="newPrompt()">
+                    🔄 New
+                </button>
+            </div>
+        </div>
+
+        <!-- Examples Section - Collapsible -->
+        <div class="examples-section">
+            <button class="examples-toggle" onclick="toggleExamples()">
+                <span id="examplesIcon">💡</span>
+                <span id="examplesText">Show examples</span>
+            </button>
+            <div class="examples-content" id="examplesContent">
+                <div class="example-item" onclick="useExample('buatin konten instagram tentang kue coklat homemade')">
+                    📱 "buatin konten instagram tentang kue coklat homemade"
+                </div>
+                <div class="example-item" onclick="useExample('gambar sunset di pantai dengan siluet orang')">
+                    🎨 "gambar sunset di pantai dengan siluet orang"
+                </div>
+                <div class="example-item" onclick="useExample('artikel lengkap tentang MPASI bayi 6 bulan')">
+                    ✍️ "artikel lengkap tentang MPASI bayi 6 bulan"
+                </div>
+                <div class="example-item" onclick="useExample('script video youtube review laptop gaming')">
+                    🎬 "script video youtube review laptop gaming"
+                </div>
+                <div class="example-item" onclick="useExample('kode python untuk scraping website')">
+                    💻 "kode python untuk scraping website"
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Selector Popup -->
+    <div class="platform-selector-popup" id="platformPopup">
+        <div class="popup-content">
+            <div class="popup-title" id="platformPopupTitle">🤖 Select AI Platform</div>
+            <p id="platformPopupDesc" style="text-align: center; margin-bottom: var(--spacing-md); color: var(--text-secondary); font-size: 14px;">
+                Which platform will you use?
+            </p>
+            <div class="platform-grid" id="platformOptions"></div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        ✓ Copied to clipboard!
+    </div>
+
+    <script>
+        let detectedType = '';
+        let selectedPlatform = '';
+        let currentInput = '';
+
+        // Detection patterns
+        const patterns = {
+            image: {
+                keywords: ['gambar', 'image', 'picture', 'foto', 'lukisan', 'ilustrasi', 'draw', 'paint'],
+                platforms: [
+                    { id: 'midjourney', name: '🎨 Midjourney', icon: '🎨' },
+                    { id: 'dalle', name: '🖼️ DALL-E', icon: '🖼️' },
+                    { id: 'stable-diffusion', name: '🎭 Stable Diffusion', icon: '🎭' },
+                    { id: 'leonardo', name: '✨ Leonardo AI', icon: '✨' }
+                ]
+            },
+            video: {
+                keywords: ['video', 'script', 'youtube', 'tiktok', 'reel', 'vlog', 'film'],
+                platforms: [
+                    { id: 'youtube', name: '📺 YouTube', icon: '📺' },
+                    { id: 'tiktok', name: '🎵 TikTok', icon: '🎵' },
+                    { id: 'instagram', name: '📸 Instagram Reels', icon: '📸' },
+                    { id: 'general', name: '🎬 General Video', icon: '🎬' }
+                ]
+            },
+            social: {
+                keywords: ['konten', 'caption', 'post', 'instagram', 'twitter', 'threads', 'facebook', 'linkedin', 'thread'],
+                platforms: [
+                    { id: 'instagram', name: '📱 Instagram', icon: '📱' },
+                    { id: 'twitter', name: '🐦 Twitter/X', icon: '🐦' },
+                    { id: 'threads', name: '🧵 Threads', icon: '🧵' },
+                    { id: 'linkedin', name: '💼 LinkedIn', icon: '💼' },
+                    { id: 'facebook', name: '👥 Facebook', icon: '👥' }
+                ]
+            }
+        };
+
+        // Language selection
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+
+            // Update active state
+            document.querySelectorAll('.language-toggle button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('lang' + lang.toUpperCase()).classList.add('active');
+
+            // Update text based on language
+            updateLanguage(lang);
+        }
+
+        function updateLanguage(lang) {
+            const texts = {
+                en: {
+                    placeholder: `Type your idea here...
+
+Examples:
+• 'sunset at the beach with palm trees'
+• 'instagram content about homemade chocolate cake'
+• 'python code for web scraping'
+
+Just type anything, AI will detect and optimize!`,
+                    optimizeBtn: 'Optimize',
+                    outputHeader: 'Your Optimized Prompt',
+                    showExamples: 'Show examples',
+                    hideExamples: 'Hide examples'
+                },
+                id: {
+                    placeholder: `Ketik ide Anda di sini...
+
+Contoh:
+• 'buatin konten instagram tentang kue coklat homemade'
+• 'gambar sunset di pantai dengan siluet orang'
+• 'artikel lengkap tentang MPASI bayi 6 bulan'
+
+Ketik apa aja, AI akan deteksi dan optimize!`,
+                    optimizeBtn: 'Optimasi',
+                    outputHeader: 'Prompt yang Dioptimalkan',
+                    showExamples: 'Tampilkan contoh',
+                    hideExamples: 'Sembunyikan contoh'
+                }
+            };
+
+            const t = texts[lang];
+            document.getElementById('userInput').placeholder = t.placeholder;
+
+            const btn = document.getElementById('optimizeBtn');
+            if (!btn.disabled) {
+                btn.textContent = t.optimizeBtn;
+            }
+        }
+
+        // Toggle examples section
+        function toggleExamples() {
+            const content = document.getElementById('examplesContent');
+            const text = document.getElementById('examplesText');
+            const icon = document.getElementById('examplesIcon');
+            const lang = localStorage.getItem('language') || 'en';
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                text.textContent = lang === 'id' ? 'Tampilkan contoh' : 'Show examples';
+                icon.textContent = '💡';
+            } else {
+                content.classList.add('show');
+                text.textContent = lang === 'id' ? 'Sembunyikan contoh' : 'Hide examples';
+                icon.textContent = '✨';
+            }
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            const savedLang = localStorage.getItem('language') || 'en';
+            setLanguage(savedLang);
+        };
+
+        function useExample(text) {
+            document.getElementById('userInput').value = text;
+            document.getElementById('userInput').focus();
+        }
+
+        function detectType(input) {
+            input = input.toLowerCase();
+            
+            // Check for image keywords
+            for (let keyword of patterns.image.keywords) {
+                if (input.includes(keyword)) {
+                    return 'image';
+                }
+            }
+            
+            // Check for video keywords
+            for (let keyword of patterns.video.keywords) {
+                if (input.includes(keyword)) {
+                    return 'video';
+                }
+            }
+            
+            // Check for social media keywords
+            for (let keyword of patterns.social.keywords) {
+                if (input.includes(keyword)) {
+                    return 'social';
+                }
+            }
+            
+            // Check for specific content types
+            if (input.includes('artikel') || input.includes('blog') || input.includes('tulisan')) {
+                return 'article';
+            }
+            
+            if (input.includes('resep') || input.includes('recipe') || input.includes('masak')) {
+                return 'recipe';
+            }
+            
+            if (input.includes('kode') || input.includes('code') || input.includes('program') || input.includes('script')) {
+                return 'code';
+            }
+            
+            // Default to general text
+            return 'text';
+        }
+
+        function showDetection(type) {
+            const detectionInfo = document.getElementById('detectionInfo');
+            const badgesDiv = document.getElementById('detectionBadges');
+
+            let badges = '';
+
+            switch(type) {
+                case 'image':
+                    badges = '<span class="detection-badge"><span class="icon">🎨</span> Image Generation</span>';
+                    break;
+                case 'video':
+                    badges = '<span class="detection-badge"><span class="icon">🎬</span> Video Script</span>';
+                    break;
+                case 'social':
+                    badges = '<span class="detection-badge"><span class="icon">📱</span> Social Media Content</span>';
+                    break;
+                case 'article':
+                    badges = '<span class="detection-badge"><span class="icon">✍️</span> Article/Blog</span>';
+                    break;
+                case 'recipe':
+                    badges = '<span class="detection-badge"><span class="icon">🍳</span> Recipe</span>';
+                    break;
+                case 'code':
+                    badges = '<span class="detection-badge"><span class="icon">💻</span> Code/Programming</span>';
+                    break;
+                default:
+                    badges = '<span class="detection-badge"><span class="icon">📝</span> Text Content</span>';
+            }
+
+            badgesDiv.innerHTML = badges;
+            detectionInfo.style.display = 'block';
+        }
+
+        function showPlatformSelector(type, callback) {
+            if (!patterns[type] || !patterns[type].platforms) {
+                // No platform selection needed, proceed directly
+                callback('default');
+                return;
+            }
+
+            const lang = localStorage.getItem('language') || 'en';
+            const popup = document.getElementById('platformPopup');
+            const optionsDiv = document.getElementById('platformOptions');
+
+            // Update popup text
+            document.getElementById('platformPopupTitle').textContent = lang === 'id' ? '🤖 Pilih Platform AI' : '🤖 Select AI Platform';
+            document.getElementById('platformPopupDesc').textContent = lang === 'id' ? 'Platform mana yang akan kamu gunakan?' : 'Which platform will you use?';
+
+            optionsDiv.innerHTML = '';
+
+            patterns[type].platforms.forEach(platform => {
+                const option = document.createElement('div');
+                option.className = 'platform-option';
+                option.innerHTML = `
+                    <div style="font-size: 2rem; margin-bottom: 8px;">${platform.icon}</div>
+                    <div style="font-weight: 500; font-size: 14px; color: var(--text-primary);">${platform.name.replace(platform.icon + ' ', '')}</div>
+                `;
+                option.onclick = () => {
+                    selectedPlatform = platform.id;
+                    popup.classList.remove('show');
+                    callback(platform.id);
+                };
+                optionsDiv.appendChild(option);
+            });
+
+            popup.classList.add('show');
+        }
+
+        function analyzeAndOptimize() {
+            currentInput = document.getElementById('userInput').value.trim();
+            const lang = localStorage.getItem('language') || 'en';
+
+            if (!currentInput) {
+                alert(lang === 'id' ? 'Silakan masukkan ide Anda terlebih dahulu!' : 'Please enter your idea first!');
+                return;
+            }
+
+            const btn = document.getElementById('optimizeBtn');
+            btn.disabled = true;
+            btn.textContent = lang === 'id' ? '🔍 Menganalisis...' : '🔍 Analyzing...';
+
+            setTimeout(() => {
+                detectedType = detectType(currentInput);
+                showDetection(detectedType);
+
+                btn.textContent = lang === 'id' ? '⚙️ Mengoptimalkan...' : '⚙️ Optimizing...';
+
+                // Check if platform selection is needed
+                if (detectedType === 'image' || detectedType === 'video' || detectedType === 'social') {
+                    showPlatformSelector(detectedType, (platform) => {
+                        generateOptimizedPrompt(currentInput, detectedType, platform);
+                        btn.disabled = false;
+                        btn.textContent = lang === 'id' ? 'Optimasi' : 'Optimize';
+                    });
+                } else {
+                    generateOptimizedPrompt(currentInput, detectedType, 'default');
+                    btn.disabled = false;
+                    btn.textContent = lang === 'id' ? 'Optimasi' : 'Optimize';
+                }
+            }, 500);
+        }
+
+        function generateOptimizedPrompt(input, type, platform) {
+            let optimized = '';
+            const lang = localStorage.getItem('language') || 'en';
+
+            switch(type) {
+                case 'image':
+                    optimized = optimizeImage(input, platform);
+                    break;
+                case 'video':
+                    optimized = optimizeVideo(input, platform);
+                    break;
+                case 'social':
+                    optimized = optimizeSocial(input, platform);
+                    break;
+                case 'article':
+                    optimized = optimizeArticle(input);
+                    break;
+                case 'recipe':
+                    optimized = optimizeRecipe(input);
+                    break;
+                case 'code':
+                    optimized = optimizeCode(input);
+                    break;
+                default:
+                    optimized = optimizeGeneral(input);
+            }
+
+            // Translate to Indonesian if needed
+            if (lang === 'id') {
+                optimized = translateToIndonesian(optimized, type);
+            }
+
+            document.getElementById('optimizedOutput').textContent = optimized;
+            document.getElementById('outputSection').style.display = 'block';
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function translateToIndonesian(prompt, type) {
+            const idInstructions = {
+                'image': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Gunakan prompt di bawah ini untuk AI Image Generator (Midjourney, DALL-E, Stable Diffusion, dll):
+
+`,
+                'video': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Template skrip video berikut bisa langsung kamu gunakan. Sesuaikan dengan konten kamu:
+
+`,
+                'social': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Strategi konten media sosial berikut siap digunakan. Sesuaikan dengan brand dan audience kamu:
+
+`,
+                'article': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Struktur artikel berikut bisa kamu gunakan sebagai panduan menulis. Isi dengan konten sesuai topik kamu:
+
+`,
+                'recipe': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Template resep lengkap berikut bisa langsung kamu ikuti atau sesuaikan:
+
+`,
+                'code': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Prompt berikut akan membantu AI memberikan kode yang lengkap dan siap pakai:
+
+`,
+                'text': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Gunakan prompt di bawah ini untuk mendapatkan hasil yang optimal:
+
+`
+            };
+
+            const instruction = idInstructions[type] || idInstructions['text'];
+            return instruction + prompt + `
+
+---
+
+💡 TIP: Copy seluruh teks di atas dan paste ke ChatGPT/Claude untuk hasil terbaik!`;
+        }
+
+        function optimizeImage(input, platform) {
+            // Extract subject from input
+            const cleanInput = input.replace(/gambar|image|picture|foto|buatin|bikin/gi, '').trim();
+            
+            if (platform === 'midjourney') {
+                return `${cleanInput}, photorealistic, highly detailed, 8K resolution, professional photography, cinematic lighting, perfect composition, rule of thirds, vibrant colors, sharp focus, intricate details, masterpiece quality, --ar 16:9 --style raw --stylize 750 --v 6`;
+            } else if (platform === 'dalle') {
+                return `Create a high-quality, photorealistic image of ${cleanInput}. The image should feature exceptional detail and clarity with professional photography techniques. Use proper lighting setup with golden hour quality, cinematic composition following the rule of thirds, and vibrant yet natural color grading. Include fine textures, realistic materials, and natural atmospheric effects. Professional photography style with shallow depth of field and bokeh background where appropriate.`;
+            } else if (platform === 'stable-diffusion') {
+                return `${cleanInput}, masterpiece, best quality, ultra detailed, 8k uhd, photorealistic, professional photography, cinematic lighting, vivid colors, sharp focus, highly detailed, intricate, elegant, smooth render
+                
+Negative prompt: blurry, low quality, low resolution, distorted, ugly, bad anatomy, mutated, deformed, watermark, text, signature`;
+            } else { // leonardo
+                return `${cleanInput}, ultra high quality, photorealistic, 8K resolution, professional photography, perfect lighting, cinematic composition, highly detailed, masterpiece`;
+            }
+        }
+
+        function optimizeVideo(input, platform) {
+            const topic = input.replace(/script|video|youtube|tiktok|reel|vlog|buatin|bikin/gi, '').trim();
+            
+            let prompt = `Create a comprehensive video script for: ${topic}\n\n`;
+            
+            if (platform === 'youtube') {
+                prompt += `YOUTUBE VIDEO SCRIPT FORMAT:
+
+[INTRO - First 15 seconds]
+HOOK: (Attention-grabbing opening that makes viewers stop scrolling)
+- Start with a compelling question, surprising statement, or bold claim
+- Tease the value they'll get from watching
+
+WELCOME & CONTEXT: (5-10 seconds)
+- Brief introduction
+- What this video is about
+- Why it matters to the viewer
+
+[MAIN CONTENT - Body]
+SECTION 1: [Main Point 1]
+- Key information
+- Examples/demonstrations
+- Visual cues: [B-roll suggestions]
+
+SECTION 2: [Main Point 2]
+- Detailed explanation
+- Real-world applications
+- Visual cues: [Graphics/charts needed]
+
+SECTION 3: [Main Point 3]
+- Supporting evidence
+- Tips and tricks
+- Visual cues: [Screenshots/demos]
+
+[ENGAGEMENT POINTS]
+- Mid-roll: "If you're finding this helpful, hit that like button!"
+- Ask viewers to comment their thoughts/questions
+- Reference previous/upcoming content
+
+[CONCLUSION]
+SUMMARY: Quick recap of key points
+CALL-TO-ACTION:
+- Subscribe for more content
+- Check out related videos
+- Join community/newsletter
+- Product/affiliate link (if applicable)
+
+OUTRO: (5 seconds)
+- Thank viewers
+- End screen elements
+
+[PRODUCTION NOTES]
+- Estimated duration: [X minutes]
+- Tone: Engaging, informative, authentic
+- Pacing: Keep energy high, cut dead air
+- Music suggestions: Upbeat background track
+- Graphics needed: Lower thirds, bullet points, transitions`;
+            } else if (platform === 'tiktok') {
+                prompt += `TIKTOK/REELS SCRIPT FORMAT (60 seconds max):
+
+[HOOK - First 3 seconds] ⚡
+Opening line that stops the scroll:
+"[Attention-grabbing statement/question]"
+
+Visual: [Dynamic opening shot]
+
+[PROBLEM/SETUP - Seconds 3-10]
+Establish what you're addressing:
+"[Relate to viewer's pain point or curiosity]"
+
+Visual: [Show the problem/situation]
+
+[SOLUTION/VALUE - Seconds 10-45]
+Deliver the core content in quick, digestible points:
+
+Point 1: [Quick tip/insight]
+Visual: [Demonstration/example]
+
+Point 2: [Next tip/insight]
+Visual: [Show result/benefit]
+
+Point 3: [Final tip/insight]
+Visual: [Strong visual proof]
+
+[CALL-TO-ACTION - Seconds 45-55]
+"[Strong CTA: Follow, Save, Share, Comment]"
+"[Engagement question or teaser for next video]"
+
+Visual: [Face to camera, direct address]
+
+[END SCREEN - Seconds 55-60]
+Follow/Like reminder
+
+PRODUCTION NOTES:
+- Text overlays: Key points on screen
+- Trending audio: [Suggest current trending sound]
+- Transitions: Quick cuts, every 3-5 seconds
+- Captions: Must have (80% watch without sound)
+- Hashtags: [Mix trending + niche tags]`;
+            } else {
+                prompt += `VIDEO SCRIPT STRUCTURE:
+
+OPENING (5-10 seconds):
+- Hook that grabs attention
+- Preview the value
+
+INTRODUCTION (10-20 seconds):
+- Who you are (if relevant)
+- What this video covers
+- Why viewers should watch
+
+MAIN CONTENT (Body):
+1. [First main point]
+   - Explanation
+   - Examples
+   - Visuals needed
+
+2. [Second main point]
+   - Details
+   - Demonstrations
+   - Graphics/B-roll
+
+3. [Third main point]
+   - Additional insights
+   - Practical applications
+   - Supporting visuals
+
+CONCLUSION (10-15 seconds):
+- Quick summary
+- Clear call-to-action
+- Thank you & next steps
+
+PRODUCTION NOTES:
+- Tone: [Professional/Casual/Educational]
+- Duration: [Target length]
+- Key visuals needed
+- Music suggestions`;
+            }
+            
+            return prompt;
+        }
+
+        function optimizeSocial(input, platform) {
+            const topic = input.replace(/konten|caption|post|instagram|twitter|facebook|buatin|bikin/gi, '').trim();
+            
+            let prompt = '';
+            
+            if (platform === 'instagram') {
+                prompt = `Create comprehensive Instagram content strategy about: ${topic}
+
+INSTAGRAM CONTENT PACKAGE:
+
+1. FEED POST CAPTION:
+[Hook - First line that stops the scroll]
+
+[Value/Story - 3-5 sentences delivering insight or narrative]
+
+[Engagement - Question or CTA]
+
+[Hashtags - Mix of popular, niche, and branded]
+Popular: #[relevant trending tags]
+Niche: #[specific audience tags]
+Branded: #[your brand tags]
+
+2. CAROUSEL POST IDEAS (Swipeable):
+Slide 1: Eye-catching cover with title
+Slide 2-5: Key points, tips, or steps
+Slide 6-8: Examples, demonstrations
+Slide 9: Summary
+Slide 10: CTA (Follow, Save, Share)
+
+Topics:
+• "[Listicle idea related to ${topic}]"
+• "[Educational breakdown about ${topic}]"
+• "[Before/After or Comparison about ${topic}]"
+
+3. REEL/VIDEO IDEAS:
+• 15-30 second quick tip
+• Trending audio + ${topic} twist
+• Behind-the-scenes
+• Tutorial/How-to
+• Transformation/Result showcase
+
+4. STORY IDEAS:
+• Poll: "[Relevant question]"
+• Quiz: "[Fun quiz about topic]"
+• Q&A: "[Answer common questions]"
+• Behind-the-scenes
+• User-generated content reshare
+• Countdown to [event/launch]
+
+5. ENGAGEMENT STRATEGY:
+• Post timing: [Best times for your niche]
+• Frequency: 4-6 posts per week
+• Story frequency: Daily
+• Response strategy: Reply within 1 hour
+
+CONTENT TONE: ${topic.includes('food') || topic.includes('kue') ? 'Warm, inviting, mouthwatering' : 'Engaging, authentic, valuable'}`;
+            } else if (platform === 'twitter') {
+                prompt = `Create Twitter/X content strategy about: ${topic}
+
+TWITTER THREAD STRUCTURE:
+
+Tweet 1 (Hook):
+[Attention-grabbing opening statement]
+[Preview the thread value]
+
+Tweet 2:
+[First main point]
+[Supporting detail]
+
+Tweet 3:
+[Second main point]
+[Example or data]
+
+Tweet 4:
+[Third main point]
+[Actionable insight]
+
+Tweet 5-7:
+[Additional points, stories, or examples]
+
+Final Tweet:
+[Summary]
+[CTA - Like/RT/Follow]
+[Link if relevant]
+
+STANDALONE TWEET IDEAS:
+• Hot take: "[Controversial but thoughtful opinion]"
+• Tip: "[Quick actionable advice]"
+• Story: "[Relatable experience]"
+• Question: "[Thought-provoking question]"
+
+ENGAGEMENT TACTICS:
+• Use line breaks for readability
+• Add relevant emojis (not too many)
+• Include data/stats when possible
+• Tag relevant accounts
+• Use 1-2 hashtags max
+• Reply to comments within 30 mins`;
+            } else if (platform === 'threads') {
+                prompt = `Create Threads content strategy about: ${topic}
+
+THREADS POST STRUCTURE:
+
+THREAD FORMAT (Similar to Twitter/X but more casual):
+
+Post 1 (Hook):
+[Attention-grabbing opening - conversational tone]
+[Keep it relatable and authentic]
+
+Post 2:
+[First key point with personal touch]
+[More casual than Twitter, Instagram-like vibe]
+
+Post 3:
+[Second point with example or story]
+[Visual elements welcome - emojis, line breaks]
+
+Post 4:
+[Third point or actionable insight]
+[Keep the conversation flowing]
+
+Post 5-7:
+[Additional thoughts, experiences, or tips]
+[Mix of short and medium-length posts]
+
+Final Post:
+[Wrap-up with clear takeaway]
+[Gentle CTA - engage, follow, share thoughts]
+
+STANDALONE POST IDEAS:
+• Personal story: "[Authentic, relatable experience]"
+• Quick tip: "[Casual, friendly advice]"
+• Hot take: "[Thoughtful opinion, less formal than Twitter]"
+• Behind-the-scenes: "[Share your process or journey]"
+• Question: "[Start a genuine conversation]"
+
+THREADS BEST PRACTICES:
+• More casual and conversational than Twitter
+• Visual elements encouraged (emojis, formatting)
+• Authenticity over polish
+• Engage with replies personally
+• Cross-post from Instagram if relevant
+• Hashtags work but use sparingly (1-3 max)
+• Reply to your own thread to add context
+• Keep individual posts concise (500 chars is sweet spot)
+• Mix text with occasional media
+
+ENGAGEMENT TIPS:
+• Reply to every comment in first hour
+• Use questions to spark discussion
+• Share personal experiences
+• Be genuine, not overly promotional
+• Tag relevant creators (respectfully)
+• Time posts when audience is active`;
+            } else if (platform === 'linkedin') {
+                prompt = `Create LinkedIn content strategy about: ${topic}
+
+LINKEDIN POST FORMAT:
+
+HOOK (First 2 lines - visible before "see more"):
+[Compelling opening that makes people want to read more]
+
+CONTEXT:
+[Set up the situation or problem]
+
+VALUE/STORY:
+[Share insights, experience, or lessons]
+[Use short paragraphs for readability]
+
+[Break up text with line spaces]
+
+KEY TAKEAWAYS:
+• [Point 1]
+• [Point 2]
+• [Point 3]
+
+CALL-TO-ACTION:
+[What do you want readers to do?]
+💡 [Engage question]
+♻️ [Share if valuable]
+➕ [Follow for more]
+
+CONTENT TYPES:
+1. Thought Leadership
+2. Industry Insights
+3. Case Studies
+4. Professional Lessons
+5. Career Tips
+
+TONE: Professional yet personable, authoritative but approachable`;
+            } else { // Facebook
+                prompt = `Create Facebook content strategy about: ${topic}
+
+FACEBOOK POST:
+
+[Engaging opening - Tell a story or ask a question]
+
+[Main content - Share value, information, or entertainment]
+[Use conversational tone]
+[Include personal touch or relatable elements]
+
+[Visual cue: Suggest image/video type]
+
+[Call-to-Action]
+👍 Like if you agree
+💬 Comment your thoughts
+🔄 Share with someone who needs this
+
+CONTENT IDEAS:
+• Live video Q&A
+• Poll or survey
+• User-generated content feature
+• Behind-the-scenes
+• Tips and tutorials
+• Community highlights
+
+ENGAGEMENT STRATEGY:
+• Post when audience is most active
+• Respond to all comments
+• Create shareable content
+• Use Facebook Groups for community`;
+            }
+            
+            return prompt;
+        }
+
+        function optimizeArticle(input) {
+            const topic = input.replace(/artikel|blog|tulisan|tulis|buatin|bikin/gi, '').trim();
+            
+            return `Write a comprehensive, engaging article about: ${topic}
+
+ARTICLE STRUCTURE:
+
+HEADLINE:
+[Compelling, SEO-friendly title that promises clear value]
+
+INTRODUCTION (150-200 words):
+• Hook: Start with a relatable scenario, surprising statistic, or compelling question
+• Problem: Establish what issue you're addressing
+• Promise: Tell readers what they'll learn/gain
+• Credibility: Brief mention of your expertise or research
+• Roadmap: Quick preview of what's covered
+
+MAIN CONTENT:
+
+Section 1: [First Major Point]
+H2: [Descriptive subheading]
+• Explanation of the concept
+• Real-world examples
+• Data/research to support
+• Actionable tips
+
+Section 2: [Second Major Point]
+H2: [Descriptive subheading]
+• Deeper dive into specifics
+• Case studies or stories
+• Common mistakes to avoid
+• Best practices
+
+Section 3: [Third Major Point]
+H2: [Descriptive subheading]
+• Advanced insights
+• Expert perspectives
+• Trends and future outlook
+• Tools and resources
+
+[Additional sections as needed]
+
+PRACTICAL APPLICATION:
+H2: "How to Implement These Ideas"
+• Step-by-step guide
+• Templates or frameworks
+• Checklist or action items
+
+CONCLUSION (100-150 words):
+• Recap key points (3-4 main takeaways)
+• Reinforce the main benefit
+• Call-to-action (subscribe, comment, share, download resource)
+• Final inspiring thought or next steps
+
+WRITING GUIDELINES:
+• Length: 1500-2500 words for comprehensive coverage
+• Tone: ${topic.includes('parenting') || topic.includes('baby') || topic.includes('anak') ? 'Empathetic, supportive, evidence-based' : 'Professional yet accessible, engaging'}
+• Readability: Use short paragraphs (3-4 sentences max)
+• Scannable: Include bullet points, numbered lists, bold text for key concepts
+• SEO: Natural keyword integration, meta description ready
+• Engagement: Include relevant questions, actionable advice
+
+ADDITIONAL ELEMENTS:
+• Pull quotes: 2-3 memorable statements to highlight
+• Internal links: Suggest related article topics
+• External links: Credible sources and research
+• Images: Suggest 4-6 relevant images or infographics
+• Meta description: [Write 155-160 character summary]
+
+RESEARCH & CREDIBILITY:
+• Include 3-5 credible sources
+• Current statistics (within last 2 years)
+• Expert quotes or perspectives
+• Real examples or case studies`;
+        }
+
+        function optimizeRecipe(input) {
+            const dish = input.replace(/resep|recipe|masak|buatin|bikin/gi, '').trim();
+            
+            return `Create a comprehensive, professional recipe for: ${dish}
+
+RECIPE TITLE:
+[Descriptive, appealing name]
+
+RECIPE OVERVIEW:
+• Cuisine: [Type of cuisine]
+• Difficulty Level: [Easy/Medium/Advanced]
+• Prep Time: [X minutes]
+• Cook Time: [X minutes]
+• Total Time: [X minutes]
+• Servings: [Number of servings]
+• Best for: [Occasion/meal type]
+
+DIETARY INFORMATION:
+[Check applicable: Vegetarian, Vegan, Gluten-Free, Dairy-Free, Nut-Free, Low-Carb, etc.]
+
+INGREDIENTS:
+(List with precise measurements)
+
+Main Ingredients:
+• [Ingredient 1] - [Amount]
+• [Ingredient 2] - [Amount]
+• [Ingredient 3] - [Amount]
+
+For the [Component if applicable]:
+• [Ingredient] - [Amount]
+
+For [Another component]:
+• [Ingredient] - [Amount]
+
+SUBSTITUTION OPTIONS:
+• Instead of [ingredient]: Use [alternative]
+• For [dietary restriction]: Replace [ingredient] with [substitute]
+
+EQUIPMENT NEEDED:
+Essential:
+• [Tool 1]
+• [Tool 2]
+• [Tool 3]
+
+Optional but helpful:
+• [Tool 4]
+
+STEP-BY-STEP INSTRUCTIONS:
+
+Prep Work:
+1. [First preparation step with timing and visual cues]
+2. [Second preparation step]
+
+Cooking Process:
+1. [First cooking step - include temperature, timing, what to look for]
+2. [Second cooking step - describe what it should look like/smell like at this stage]
+3. [Continue with detailed steps - each with specific doneness cues]
+
+Finishing:
+1. [Final steps]
+2. [Plating suggestions]
+
+CHEF'S TIPS & TRICKS:
+• Pro tip 1: [Insider technique for best results]
+• Pro tip 2: [Common mistake to avoid]
+• Pro tip 3: [How to tell when it's perfectly done]
+• Make-ahead: [What can be prepped in advance]
+
+STORAGE INSTRUCTIONS:
+• Refrigerator: [How long and how to store]
+• Freezer: [Freezing tips if applicable]
+• Reheating: [Best method to reheat]
+
+SERVING SUGGESTIONS:
+• Pairs well with: [Side dishes, beverages]
+• Garnish ideas: [Fresh herbs, sauces, toppings]
+• Presentation tips: [How to plate attractively]
+
+VARIATIONS:
+• [Variation 1]: How to modify for different flavor
+• [Variation 2]: Seasonal twist
+• [Variation 3]: Easier/faster version
+
+NUTRITIONAL INFORMATION (Approximate per serving):
+• Calories: [X kcal]
+• Protein: [X g]
+• Carbohydrates: [X g]
+• Fat: [X g]
+• Fiber: [X g]
+
+RECIPE NOTES:
+• [Any special ingredient sources]
+• [Cultural context if relevant]
+• [Personal story or origin if applicable]`;
+        }
+
+        function optimizeCode(input) {
+            const task = input.replace(/kode|code|program|script|buatin|bikin/gi, '').trim();
+            
+            return `Help me code: ${task}
+
+Please provide a complete, production-ready solution with:
+
+1. SOLUTION OVERVIEW:
+• Approach and methodology
+• Technology stack and why
+• Architecture/design pattern used
+• Time and space complexity (if applicable)
+
+2. COMPLETE, WORKING CODE:
+• Well-commented and documented
+• Following best practices and conventions
+• Proper error handling
+• Input validation
+• Security considerations
+
+3. CODE EXPLANATION:
+• How it works (step-by-step breakdown)
+• Why certain choices were made
+• Key algorithms or logic explained
+• Potential edge cases handled
+
+4. USAGE EXAMPLES:
+Basic usage:
+\`\`\`
+[Example 1]
+\`\`\`
+
+Advanced usage:
+\`\`\`
+[Example 2]
+\`\`\`
+
+Edge cases:
+\`\`\`
+[Example 3]
+\`\`\`
+
+5. TESTING:
+• Unit test examples
+• Test cases to consider
+• How to validate the solution
+
+6. DEPENDENCIES:
+• Required libraries/packages
+• Installation instructions
+• Version requirements
+
+7. PERFORMANCE OPTIMIZATION:
+• Current complexity analysis
+• Potential optimizations
+• Scalability considerations
+• Alternative approaches
+
+8. DOCUMENTATION:
+\`\`\`
+/**
+ * [Function/Class documentation]
+ * @param {type} paramName - description
+ * @returns {type} description
+ */
+\`\`\`
+
+9. COMMON PITFALLS:
+• Mistakes to avoid
+• Debugging tips
+• Best practices specific to this task
+
+10. NEXT STEPS:
+• How to extend this solution
+• Related functionality to implement
+• Integration suggestions
+
+Please format code with proper syntax highlighting and make it copy-paste ready.`;
+        }
+
+        function optimizeGeneral(input) {
+            return `Please help me with: ${input}
+
+Provide a comprehensive, well-structured response that includes:
+
+1. UNDERSTANDING THE REQUEST:
+• Clarification of what you're asking for
+• Context and scope
+
+2. DETAILED RESPONSE:
+• Thorough explanation or solution
+• Organized with clear sections
+• Practical, actionable information
+
+3. EXAMPLES:
+• Real-world examples
+• Demonstrations where applicable
+• Use cases
+
+4. BEST PRACTICES:
+• Recommended approaches
+• Common mistakes to avoid
+• Tips for success
+
+5. ADDITIONAL RESOURCES:
+• Further reading
+• Helpful tools or references
+• Next steps
+
+Please make the response clear, practical, and easy to implement.`;
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('optimizedOutput').textContent;
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(output).then(() => {
+                    showNotification();
+                });
+            } else {
+                const textArea = document.createElement('textarea');
+                textArea.value = output;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showNotification();
+                } catch (err) {
+                    console.error('Copy failed:', err);
+                }
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            const lang = localStorage.getItem('language') || 'en';
+            notification.textContent = lang === 'id' ? '✓ Disalin ke clipboard!' : '✓ Copied to clipboard!';
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+
+        function downloadPrompt() {
+            const output = document.getElementById('optimizedOutput').textContent;
+            const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `optimized-prompt-${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function newPrompt() {
+            document.getElementById('userInput').value = '';
+            document.getElementById('outputSection').style.display = 'none';
+            document.getElementById('detectionInfo').style.display = 'none';
+            document.getElementById('userInput').focus();
+        }
+    </script>
+</body>
+</html>
