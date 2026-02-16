@@ -108,86 +108,66 @@
             color: var(--text-primary);
         }
 
-        .main-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            margin-bottom: 30px;
-        }
-
-        .dark-mode .main-card {
-            background: rgba(30, 41, 59, 0.95);
-        }
-
-        .input-section {
-            margin-bottom: 30px;
-        }
-
-        .input-label {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .dark-mode .input-label {
-            color: var(--text-dark);
+        /* Main Input Area */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: var(--spacing-md);
         }
 
         .main-input {
             width: 100%;
-            min-height: 150px;
-            padding: 20px;
-            border: 3px solid var(--primary);
-            border-radius: 15px;
-            font-size: 16px;
+            min-height: 180px;
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            color: var(--text-primary);
+            font-size: 15px;
             font-family: inherit;
+            line-height: 1.6;
             resize: vertical;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .dark-mode .main-input {
-            background: #0f172a;
-            color: var(--text-dark);
-            border-color: var(--secondary);
+            transition: all 0.2s ease;
         }
 
         .main-input:focus {
             outline: none;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
-            transform: translateY(-2px);
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .main-input::placeholder {
-            color: #94a3b8;
+            color: var(--text-tertiary);
+        }
+
+        /* Optimize Button - Small, Soft Blue */
+        .button-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--spacing-xl);
         }
 
         .optimize-btn {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 10px 24px;
+            background: var(--accent-primary);
             color: white;
             border: none;
-            border-radius: 15px;
-            font-size: 20px;
-            font-weight: 700;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-md);
         }
 
         .optimize-btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
         }
 
         .optimize-btn:active {
-            transform: translateY(-1px);
+            transform: translateY(0);
         }
 
         .optimize-btn:disabled {
@@ -195,38 +175,38 @@
             cursor: not-allowed;
         }
 
+        /* Detection Badge - Inline, appears after typing */
         .detection-badge {
-            display: inline-block;
-            padding: 8px 16px;
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
-            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .detection-badge .icon {
             font-size: 14px;
-            font-weight: 600;
-            margin: 10px 5px;
-            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
         }
 
         .detection-info {
-            background: rgba(99, 102, 241, 0.1);
-            border-left: 4px solid var(--primary);
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin: 20px 0;
+            margin-bottom: var(--spacing-md);
             display: none;
         }
 
-        .dark-mode .detection-info {
-            background: rgba(139, 92, 246, 0.2);
-        }
-
+        /* Platform Selector Popup */
         .platform-selector-popup {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
             display: none;
             justify-content: center;
@@ -239,180 +219,190 @@
         }
 
         .popup-content {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
+            background: var(--bg-primary);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
             max-width: 500px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-
-        .dark-mode .popup-content {
-            background: #1e293b;
-            color: var(--text-dark);
+            box-shadow: var(--shadow-lg);
         }
 
         .popup-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
             text-align: center;
+            color: var(--text-primary);
         }
 
         .platform-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
         }
 
         .platform-option {
-            padding: 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
             cursor: pointer;
             text-align: center;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .dark-mode .platform-option {
-            background: #0f172a;
-            border-color: #334155;
+            transition: all 0.2s ease;
+            background: var(--bg-secondary);
         }
 
         .platform-option:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .platform-option.selected {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--accent-primary);
             color: white;
-            border-color: transparent;
+            border-color: var(--accent-primary);
         }
 
+        /* Output Section - Slides in after optimize */
         .output-section {
-            margin-top: 30px;
-            padding: 30px;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
-            border-radius: 15px;
-            border: 2px solid var(--primary);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
             display: none;
+            animation: slideIn 0.3s ease;
         }
 
-        .dark-mode .output-section {
-            background: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .output-header {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .output-box {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
             font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.8;
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-primary);
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: var(--spacing-md);
             white-space: pre-wrap;
             word-wrap: break-word;
-            max-height: 600px;
-            overflow-y: auto;
-            margin: 15px 0;
         }
 
-        .dark-mode .output-box {
-            background: #0f172a;
-            color: var(--text-dark);
-        }
-
+        /* Action Buttons */
         .btn-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-top: 20px;
+            display: flex;
+            gap: var(--spacing-sm);
         }
 
         .btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
+            flex: 1;
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .btn-accent {
-            background: var(--accent);
-            color: white;
+            transition: all 0.2s ease;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: var(--bg-primary);
+            border-color: var(--accent-secondary);
+            color: var(--text-primary);
         }
 
+        /* Examples Section - Collapsible */
         .examples-section {
-            background: rgba(139, 92, 246, 0.1);
-            border-left: 4px solid var(--secondary);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
+            margin-top: var(--spacing-xl);
+        }
+
+        .examples-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: var(--spacing-sm) 0;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            font-family: inherit;
+        }
+
+        .examples-toggle:hover {
+            color: var(--accent-secondary);
+        }
+
+        .examples-content {
+            margin-top: var(--spacing-md);
+            display: none;
+        }
+
+        .examples-content.show {
+            display: block;
+            animation: slideIn 0.3s ease;
         }
 
         .example-item {
-            margin: 10px 0;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 8px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-sm);
             cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .dark-mode .example-item {
-            background: rgba(15, 23, 42, 0.5);
+            transition: all 0.2s ease;
+            font-size: 14px;
+            color: var(--text-secondary);
         }
 
         .example-item:hover {
-            background: rgba(255, 255, 255, 0.8);
-            transform: translateX(5px);
+            background: var(--bg-tertiary);
+            border-color: var(--accent-secondary);
+            color: var(--text-primary);
+            transform: translateX(4px);
         }
 
-        .dark-mode .example-item:hover {
-            background: rgba(15, 23, 42, 0.8);
-        }
-
+        /* Notification */
         .notification {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background: var(--success);
+            background: var(--accent-primary);
             color: white;
-            padding: 25px 50px;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: 700;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
             z-index: 3000;
             transition: transform 0.3s ease;
         }
@@ -421,13 +411,18 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
+            .container {
+                padding: var(--spacing-md);
             }
 
-            .main-card {
-                padding: 25px;
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .main-input {
+                min-height: 150px;
             }
 
             .platform-grid {
@@ -435,13 +430,31 @@
             }
 
             .btn-group {
-                grid-template-columns: 1fr;
+                flex-direction: column;
             }
+        }
 
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-color);
         }
     </style>
 </head>
-<body class="light-mode">
+<body>
     <div class="container">
         <header class="header">
             <h1>AI Prompt Optimizer</h1>
@@ -451,53 +464,59 @@
             </div>
         </header>
 
-        <div class="main-card">
-            <div class="input-section">
-                <label class="input-label">💭 Ketik Ide Anda (apapun!)</label>
-                <textarea 
-                    id="userInput" 
-                    class="main-input"
-                    placeholder="Contoh:
-• 'buatin konten instagram tentang kue'
-• 'gambar robot futuristik'
-• 'artikel tips tidur bayi 6 bulan'
-• 'script youtube review produk skincare'
-• 'resep nasi goreng yang enak'
+        <!-- Main Input Area -->
+        <div class="input-wrapper">
+            <textarea
+                id="userInput"
+                class="main-input"
+                placeholder="Type your idea here...
 
-Ketik apa aja, AI akan deteksi dan optimize!"
-                ></textarea>
-            </div>
+Examples:
+• 'sunset at the beach with palm trees'
+• 'instagram content about homemade chocolate cake'
+• 'python code for web scraping'
 
-            <div id="detectionInfo" class="detection-info">
-                <strong>🔍 AI Detection:</strong>
-                <div id="detectionBadges"></div>
-            </div>
+Just type anything, AI will detect and optimize!"
+            ></textarea>
+        </div>
 
+        <!-- Detection Badge (appears after typing) -->
+        <div id="detectionInfo" class="detection-info">
+            <div id="detectionBadges"></div>
+        </div>
+
+        <!-- Optimize Button -->
+        <div class="button-wrapper">
             <button class="optimize-btn" onclick="analyzeAndOptimize()" id="optimizeBtn">
-                ✨ OPTIMIZE SEKARANG
+                Optimize
             </button>
+        </div>
 
-            <div class="output-section" id="outputSection">
-                <div class="output-header">
-                    <span>🎯</span> Your Optimized Prompt
-                </div>
-                <div class="output-box" id="optimizedOutput"></div>
-                
-                <div class="btn-group">
-                    <button class="btn btn-success" onclick="copyToClipboard()">
-                        📋 Copy
-                    </button>
-                    <button class="btn btn-secondary" onclick="downloadPrompt()">
-                        ⬇️ Download
-                    </button>
-                    <button class="btn btn-accent" onclick="newPrompt()">
-                        🔄 New
-                    </button>
-                </div>
+        <!-- Output Section (slides in after optimize) -->
+        <div class="output-section" id="outputSection">
+            <div class="output-header">Your Optimized Prompt</div>
+            <div class="output-box" id="optimizedOutput"></div>
+
+            <div class="btn-group">
+                <button class="btn" onclick="copyToClipboard()">
+                    📋 Copy
+                </button>
+                <button class="btn" onclick="downloadPrompt()">
+                    ⬇️ Download
+                </button>
+                <button class="btn" onclick="newPrompt()">
+                    🔄 New
+                </button>
             </div>
+        </div>
 
-            <div class="examples-section">
-                <strong>💡 Try These Examples (Click to Use):</strong>
+        <!-- Examples Section - Collapsible -->
+        <div class="examples-section">
+            <button class="examples-toggle" onclick="toggleExamples()">
+                <span id="examplesIcon">💡</span>
+                <span id="examplesText">Show examples</span>
+            </button>
+            <div class="examples-content" id="examplesContent">
                 <div class="example-item" onclick="useExample('buatin konten instagram tentang kue coklat homemade')">
                     📱 "buatin konten instagram tentang kue coklat homemade"
                 </div>
@@ -520,16 +539,16 @@ Ketik apa aja, AI akan deteksi dan optimize!"
     <!-- Platform Selector Popup -->
     <div class="platform-selector-popup" id="platformPopup">
         <div class="popup-content">
-            <div class="popup-title">🤖 Pilih AI Platform</div>
-            <p style="text-align: center; margin-bottom: 20px; opacity: 0.8;">
-                Platform mana yang akan kamu gunakan?
+            <div class="popup-title" id="platformPopupTitle">🤖 Select AI Platform</div>
+            <p id="platformPopupDesc" style="text-align: center; margin-bottom: var(--spacing-md); color: var(--text-secondary); font-size: 14px;">
+                Which platform will you use?
             </p>
             <div class="platform-grid" id="platformOptions"></div>
         </div>
     </div>
 
     <div class="notification" id="notification">
-        ✓ Copied to Clipboard!
+        ✓ Copied to clipboard!
     </div>
 
     <script>
@@ -568,18 +587,83 @@ Ketik apa aja, AI akan deteksi dan optimize!"
             }
         };
 
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        // Language selection
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+
+            // Update active state
+            document.querySelectorAll('.language-toggle button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('lang' + lang.toUpperCase()).classList.add('active');
+
+            // Update text based on language
+            updateLanguage(lang);
         }
 
-        window.onload = function() {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.remove('light-mode');
-                document.body.classList.add('dark-mode');
+        function updateLanguage(lang) {
+            const texts = {
+                en: {
+                    placeholder: `Type your idea here...
+
+Examples:
+• 'sunset at the beach with palm trees'
+• 'instagram content about homemade chocolate cake'
+• 'python code for web scraping'
+
+Just type anything, AI will detect and optimize!`,
+                    optimizeBtn: 'Optimize',
+                    outputHeader: 'Your Optimized Prompt',
+                    showExamples: 'Show examples',
+                    hideExamples: 'Hide examples'
+                },
+                id: {
+                    placeholder: `Ketik ide Anda di sini...
+
+Contoh:
+• 'buatin konten instagram tentang kue coklat homemade'
+• 'gambar sunset di pantai dengan siluet orang'
+• 'artikel lengkap tentang MPASI bayi 6 bulan'
+
+Ketik apa aja, AI akan deteksi dan optimize!`,
+                    optimizeBtn: 'Optimasi',
+                    outputHeader: 'Prompt yang Dioptimalkan',
+                    showExamples: 'Tampilkan contoh',
+                    hideExamples: 'Sembunyikan contoh'
+                }
+            };
+
+            const t = texts[lang];
+            document.getElementById('userInput').placeholder = t.placeholder;
+
+            const btn = document.getElementById('optimizeBtn');
+            if (!btn.disabled) {
+                btn.textContent = t.optimizeBtn;
             }
+        }
+
+        // Toggle examples section
+        function toggleExamples() {
+            const content = document.getElementById('examplesContent');
+            const text = document.getElementById('examplesText');
+            const icon = document.getElementById('examplesIcon');
+            const lang = localStorage.getItem('language') || 'en';
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                text.textContent = lang === 'id' ? 'Tampilkan contoh' : 'Show examples';
+                icon.textContent = '💡';
+            } else {
+                content.classList.add('show');
+                text.textContent = lang === 'id' ? 'Sembunyikan contoh' : 'Hide examples';
+                icon.textContent = '✨';
+            }
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            const savedLang = localStorage.getItem('language') || 'en';
+            setLanguage(savedLang);
         };
 
         function useExample(text) {
@@ -631,32 +715,32 @@ Ketik apa aja, AI akan deteksi dan optimize!"
         function showDetection(type) {
             const detectionInfo = document.getElementById('detectionInfo');
             const badgesDiv = document.getElementById('detectionBadges');
-            
+
             let badges = '';
-            
+
             switch(type) {
                 case 'image':
-                    badges = '<span class="detection-badge">🎨 Image Generation</span>';
+                    badges = '<span class="detection-badge"><span class="icon">🎨</span> Image Generation</span>';
                     break;
                 case 'video':
-                    badges = '<span class="detection-badge">🎬 Video Script</span>';
+                    badges = '<span class="detection-badge"><span class="icon">🎬</span> Video Script</span>';
                     break;
                 case 'social':
-                    badges = '<span class="detection-badge">📱 Social Media Content</span>';
+                    badges = '<span class="detection-badge"><span class="icon">📱</span> Social Media Content</span>';
                     break;
                 case 'article':
-                    badges = '<span class="detection-badge">✍️ Article/Blog</span>';
+                    badges = '<span class="detection-badge"><span class="icon">✍️</span> Article/Blog</span>';
                     break;
                 case 'recipe':
-                    badges = '<span class="detection-badge">🍳 Recipe</span>';
+                    badges = '<span class="detection-badge"><span class="icon">🍳</span> Recipe</span>';
                     break;
                 case 'code':
-                    badges = '<span class="detection-badge">💻 Code/Programming</span>';
+                    badges = '<span class="detection-badge"><span class="icon">💻</span> Code/Programming</span>';
                     break;
                 default:
-                    badges = '<span class="detection-badge">📝 Text Content</span>';
+                    badges = '<span class="detection-badge"><span class="icon">📝</span> Text Content</span>';
             }
-            
+
             badgesDiv.innerHTML = badges;
             detectionInfo.style.display = 'block';
         }
@@ -667,18 +751,23 @@ Ketik apa aja, AI akan deteksi dan optimize!"
                 callback('default');
                 return;
             }
-            
+
+            const lang = localStorage.getItem('language') || 'en';
             const popup = document.getElementById('platformPopup');
             const optionsDiv = document.getElementById('platformOptions');
-            
+
+            // Update popup text
+            document.getElementById('platformPopupTitle').textContent = lang === 'id' ? '🤖 Pilih Platform AI' : '🤖 Select AI Platform';
+            document.getElementById('platformPopupDesc').textContent = lang === 'id' ? 'Platform mana yang akan kamu gunakan?' : 'Which platform will you use?';
+
             optionsDiv.innerHTML = '';
-            
+
             patterns[type].platforms.forEach(platform => {
                 const option = document.createElement('div');
                 option.className = 'platform-option';
                 option.innerHTML = `
                     <div style="font-size: 2rem; margin-bottom: 8px;">${platform.icon}</div>
-                    <div style="font-weight: 600;">${platform.name.replace(platform.icon + ' ', '')}</div>
+                    <div style="font-weight: 500; font-size: 14px; color: var(--text-primary);">${platform.name.replace(platform.icon + ' ', '')}</div>
                 `;
                 option.onclick = () => {
                     selectedPlatform = platform.id;
@@ -687,39 +776,40 @@ Ketik apa aja, AI akan deteksi dan optimize!"
                 };
                 optionsDiv.appendChild(option);
             });
-            
+
             popup.classList.add('show');
         }
 
         function analyzeAndOptimize() {
             currentInput = document.getElementById('userInput').value.trim();
-            
+            const lang = localStorage.getItem('language') || 'en';
+
             if (!currentInput) {
-                alert('Please enter your idea first!');
+                alert(lang === 'id' ? 'Silakan masukkan ide Anda terlebih dahulu!' : 'Please enter your idea first!');
                 return;
             }
-            
+
             const btn = document.getElementById('optimizeBtn');
             btn.disabled = true;
-            btn.textContent = '🔍 ANALYZING...';
-            
+            btn.textContent = lang === 'id' ? '🔍 Menganalisis...' : '🔍 Analyzing...';
+
             setTimeout(() => {
                 detectedType = detectType(currentInput);
                 showDetection(detectedType);
-                
-                btn.textContent = '⚙️ OPTIMIZING...';
-                
+
+                btn.textContent = lang === 'id' ? '⚙️ Mengoptimalkan...' : '⚙️ Optimizing...';
+
                 // Check if platform selection is needed
                 if (detectedType === 'image' || detectedType === 'video' || detectedType === 'social') {
                     showPlatformSelector(detectedType, (platform) => {
                         generateOptimizedPrompt(currentInput, detectedType, platform);
                         btn.disabled = false;
-                        btn.textContent = '✨ OPTIMIZE SEKARANG';
+                        btn.textContent = lang === 'id' ? 'Optimasi' : 'Optimize';
                     });
                 } else {
                     generateOptimizedPrompt(currentInput, detectedType, 'default');
                     btn.disabled = false;
-                    btn.textContent = '✨ OPTIMIZE SEKARANG';
+                    btn.textContent = lang === 'id' ? 'Optimasi' : 'Optimize';
                 }
             }, 500);
         }
@@ -1394,6 +1484,8 @@ Please make the response clear, practical, and easy to implement.`;
 
         function showNotification() {
             const notification = document.getElementById('notification');
+            const lang = localStorage.getItem('language') || 'en';
+            notification.textContent = lang === 'id' ? '✓ Disalin ke clipboard!' : '✓ Copied to clipboard!';
             notification.classList.add('show');
             setTimeout(() => {
                 notification.classList.remove('show');
