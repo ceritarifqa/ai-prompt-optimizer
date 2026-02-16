@@ -816,7 +816,8 @@ Ketik apa aja, AI akan deteksi dan optimize!`,
 
         function generateOptimizedPrompt(input, type, platform) {
             let optimized = '';
-            
+            const lang = localStorage.getItem('language') || 'en';
+
             switch(type) {
                 case 'image':
                     optimized = optimizeImage(input, platform);
@@ -839,10 +840,62 @@ Ketik apa aja, AI akan deteksi dan optimize!`,
                 default:
                     optimized = optimizeGeneral(input);
             }
-            
+
+            // Translate to Indonesian if needed
+            if (lang === 'id') {
+                optimized = translateToIndonesian(optimized, type);
+            }
+
             document.getElementById('optimizedOutput').textContent = optimized;
             document.getElementById('outputSection').style.display = 'block';
             document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function translateToIndonesian(prompt, type) {
+            const idInstructions = {
+                'image': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Gunakan prompt di bawah ini untuk AI Image Generator (Midjourney, DALL-E, Stable Diffusion, dll):
+
+`,
+                'video': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Template skrip video berikut bisa langsung kamu gunakan. Sesuaikan dengan konten kamu:
+
+`,
+                'social': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Strategi konten media sosial berikut siap digunakan. Sesuaikan dengan brand dan audience kamu:
+
+`,
+                'article': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Struktur artikel berikut bisa kamu gunakan sebagai panduan menulis. Isi dengan konten sesuai topik kamu:
+
+`,
+                'recipe': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Template resep lengkap berikut bisa langsung kamu ikuti atau sesuaikan:
+
+`,
+                'code': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Prompt berikut akan membantu AI memberikan kode yang lengkap dan siap pakai:
+
+`,
+                'text': `🇮🇩 INSTRUKSI DALAM BAHASA INDONESIA:
+
+Gunakan prompt di bawah ini untuk mendapatkan hasil yang optimal:
+
+`
+            };
+
+            const instruction = idInstructions[type] || idInstructions['text'];
+            return instruction + prompt + `
+
+---
+
+💡 TIP: Copy seluruh teks di atas dan paste ke ChatGPT/Claude untuk hasil terbaik!`;
         }
 
         function optimizeImage(input, platform) {
