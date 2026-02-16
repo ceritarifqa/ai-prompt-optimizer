@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Optimizer - Approach 1 Mockup</title>
+    <style>
+        /* Design System */
+        :root {
+            /* Notion Light Theme */
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F7F6F3;
+            --bg-tertiary: #EFEEEB;
+
+            /* Soft Blue Accent */
+            --accent-primary: #2383E2;
+            --accent-secondary: #529CCA;
+            --accent-hover: #1966B8;
+
+            /* Text Colors */
+            --text-primary: #37352F;
+            --text-secondary: #787774;
+            --text-tertiary: #9B9A97;
+
+            /* Borders & Dividers */
+            --border-color: #E3E2E0;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 4px 8px 0 rgba(0, 0, 0, 0.12);
+
+            /* Spacing (Balanced Notion-style) */
+            --spacing-xs: 8px;
+            --spacing-sm: 12px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+
+            /* Border Radius (Soft Rounded) */
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Container - Single Column Centered */
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+
+        /* Header - Minimal */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-md);
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Language Toggle */
+        .language-toggle {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 4px;
+        }
+
+        .language-toggle button {
+            padding: 6px 14px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .language-toggle button:hover {
+            color: var(--text-primary);
+        }
+
+        .language-toggle button.active {
+            background: var(--bg-primary);
+            color: var(--accent-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Main Input Area */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .main-input {
+            width: 100%;
+            min-height: 180px;
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: inherit;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.2s ease;
+        }
+
+        .main-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .main-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* Detection Badge - Inline, appears after typing */
+        .detection-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .detection-badge .icon {
+            font-size: 14px;
+        }
+
+        /* Optimize Button - Small, Soft Blue */
+        .button-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .optimize-btn {
+            padding: 10px 24px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .optimize-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .optimize-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Output Section - Slides in after optimize */
+        .output-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+
+            /* Animation */
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .output-header {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .output-content {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-primary);
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--bg-primary);
+            border-color: var(--accent-secondary);
+            color: var(--text-primary);
+        }
+
+        /* Examples Section - Collapsible */
+        .examples-section {
+            margin-top: var(--spacing-xl);
+        }
+
+        .examples-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: var(--spacing-sm) 0;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .examples-toggle:hover {
+            color: var(--accent-secondary);
+        }
+
+        .examples-content {
+            margin-top: var(--spacing-md);
+            display: none;
+        }
+
+        .examples-content.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .example-item {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .example-item:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-secondary);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--spacing-md);
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .main-input {
+                min-height: 150px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header - Minimal -->
+        <header class="header">
+            <h1>AI Prompt Optimizer</h1>
+            <div class="language-toggle">
+                <button class="active" onclick="setLanguage('en')">English</button>
+                <button onclick="setLanguage('id')">Indonesia</button>
+            </div>
+        </header>
+
+        <!-- Main Input Area -->
+        <div class="input-wrapper">
+            <textarea
+                class="main-input"
+                placeholder="Type your idea here...
+
+Examples:
+• 'sunset at the beach with palm trees'
+• 'instagram content about homemade chocolate cake'
+• 'python code for web scraping'
+
+Just type anything, AI will detect and optimize!"
+                id="mainInput"
+            ></textarea>
+        </div>
+
+        <!-- Detection Badge (appears after typing) -->
+        <div class="detection-badge" id="detectionBadge" style="display: none;">
+            <span class="icon">🎨</span>
+            <span>Image generation detected</span>
+        </div>
+
+        <!-- Optimize Button -->
+        <div class="button-wrapper">
+            <button class="optimize-btn" onclick="showOutput()">Optimize</button>
+        </div>
+
+        <!-- Output Section (slides in after optimize) -->
+        <div class="output-section" id="outputSection" style="display: none;">
+            <div class="output-header">Your Optimized Prompt</div>
+            <div class="output-content" id="outputContent">
+sunset at the beach with palm trees, golden hour lighting, warm color palette, vibrant orange and pink sky, gentle waves, tropical paradise, photorealistic, highly detailed, 8K resolution, professional photography, cinematic composition, rule of thirds, perfect exposure, shallow depth of field, serene atmosphere, vacation vibes, masterpiece quality --ar 16:9 --style raw --stylize 750 --v 6
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="copyText()">📋 Copy</button>
+                <button class="action-btn" onclick="downloadText()">⬇️ Download</button>
+                <button class="action-btn" onclick="newPrompt()">🔄 New</button>
+            </div>
+        </div>
+
+        <!-- Examples Section - Collapsible -->
+        <div class="examples-section">
+            <button class="examples-toggle" onclick="toggleExamples()">
+                <span id="examplesIcon">💡</span>
+                <span id="examplesText">Show examples</span>
+            </button>
+            <div class="examples-content" id="examplesContent">
+                <div class="example-item" onclick="useExample('sunset at the beach with palm trees')">
+                    🎨 "sunset at the beach with palm trees"
+                </div>
+                <div class="example-item" onclick="useExample('instagram content about homemade chocolate cake')">
+                    📱 "instagram content about homemade chocolate cake"
+                </div>
+                <div class="example-item" onclick="useExample('python code for web scraping')">
+                    💻 "python code for web scraping"
+                </div>
+                <div class="example-item" onclick="useExample('article about baby sleep tips')">
+                    ✍️ "article about baby sleep tips"
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLanguage = 'en';
+
+        // Set language
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            // Update active state
+            document.querySelectorAll('.language-toggle button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Show detection badge when typing
+        document.getElementById('mainInput').addEventListener('input', function(e) {
+            const badge = document.getElementById('detectionBadge');
+            if (e.target.value.trim().length > 10) {
+                badge.style.display = 'inline-flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        });
+
+        // Show output section
+        function showOutput() {
+            const input = document.getElementById('mainInput').value.trim();
+            if (!input) {
+                alert('Please type your idea first!');
+                return;
+            }
+            document.getElementById('outputSection').style.display = 'block';
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Toggle examples
+        function toggleExamples() {
+            const content = document.getElementById('examplesContent');
+            const text = document.getElementById('examplesText');
+            const icon = document.getElementById('examplesIcon');
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                text.textContent = 'Show examples';
+                icon.textContent = '💡';
+            } else {
+                content.classList.add('show');
+                text.textContent = 'Hide examples';
+                icon.textContent = '✨';
+            }
+        }
+
+        // Use example
+        function useExample(text) {
+            document.getElementById('mainInput').value = text;
+            document.getElementById('mainInput').focus();
+            document.getElementById('detectionBadge').style.display = 'inline-flex';
+        }
+
+        // Copy to clipboard
+        function copyText() {
+            const text = document.getElementById('outputContent').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✓ Copied to clipboard!');
+            });
+        }
+
+        // Download as text file
+        function downloadText() {
+            const text = document.getElementById('outputContent').textContent;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `prompt-${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // New prompt
+        function newPrompt() {
+            document.getElementById('mainInput').value = '';
+            document.getElementById('outputSection').style.display = 'none';
+            document.getElementById('detectionBadge').style.display = 'none';
+            document.getElementById('mainInput').focus();
+        }
+    </script>
+</body>
+</html>
