@@ -577,10 +577,11 @@ Just type anything, AI will detect and optimize!"
                 ]
             },
             social: {
-                keywords: ['konten', 'caption', 'post', 'instagram', 'twitter', 'facebook', 'linkedin', 'thread'],
+                keywords: ['konten', 'caption', 'post', 'instagram', 'twitter', 'threads', 'facebook', 'linkedin', 'thread'],
                 platforms: [
                     { id: 'instagram', name: '📱 Instagram', icon: '📱' },
                     { id: 'twitter', name: '🐦 Twitter/X', icon: '🐦' },
+                    { id: 'threads', name: '🧵 Threads', icon: '🧵' },
                     { id: 'linkedin', name: '💼 LinkedIn', icon: '💼' },
                     { id: 'facebook', name: '👥 Facebook', icon: '👥' }
                 ]
@@ -1155,6 +1156,62 @@ ENGAGEMENT TACTICS:
 • Tag relevant accounts
 • Use 1-2 hashtags max
 • Reply to comments within 30 mins`;
+            } else if (platform === 'threads') {
+                prompt = `Create Threads content strategy about: ${topic}
+
+THREADS POST STRUCTURE:
+
+THREAD FORMAT (Similar to Twitter/X but more casual):
+
+Post 1 (Hook):
+[Attention-grabbing opening - conversational tone]
+[Keep it relatable and authentic]
+
+Post 2:
+[First key point with personal touch]
+[More casual than Twitter, Instagram-like vibe]
+
+Post 3:
+[Second point with example or story]
+[Visual elements welcome - emojis, line breaks]
+
+Post 4:
+[Third point or actionable insight]
+[Keep the conversation flowing]
+
+Post 5-7:
+[Additional thoughts, experiences, or tips]
+[Mix of short and medium-length posts]
+
+Final Post:
+[Wrap-up with clear takeaway]
+[Gentle CTA - engage, follow, share thoughts]
+
+STANDALONE POST IDEAS:
+• Personal story: "[Authentic, relatable experience]"
+• Quick tip: "[Casual, friendly advice]"
+• Hot take: "[Thoughtful opinion, less formal than Twitter]"
+• Behind-the-scenes: "[Share your process or journey]"
+• Question: "[Start a genuine conversation]"
+
+THREADS BEST PRACTICES:
+• More casual and conversational than Twitter
+• Visual elements encouraged (emojis, formatting)
+• Authenticity over polish
+• Engage with replies personally
+• Cross-post from Instagram if relevant
+• Hashtags work but use sparingly (1-3 max)
+• Reply to your own thread to add context
+• Keep individual posts concise (500 chars is sweet spot)
+• Mix text with occasional media
+
+ENGAGEMENT TIPS:
+• Reply to every comment in first hour
+• Use questions to spark discussion
+• Share personal experiences
+• Be genuine, not overly promotional
+• Tag relevant creators (respectfully)
+• Time posts when audience is active`;
             } else if (platform === 'linkedin') {
                 prompt = `Create LinkedIn content strategy about: ${topic}
 
